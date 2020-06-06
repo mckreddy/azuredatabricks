@@ -50,6 +50,10 @@
 
 # COMMAND ----------
 
+spark.conf.get("com.databricks.training.azure.datasource").split("\t")
+
+# COMMAND ----------
+
 (source, sasEntity, sasToken) = getAzureDataSource()
 
 spark.conf.set(sasEntity, sasToken)
@@ -114,3 +118,81 @@ print("Record Count: {0:,}".format( total ))
 # MAGIC ## Next steps
 # MAGIC 
 # MAGIC Start the next lesson, [Use common DataFrame methods]($./2.Use-common-dataframe-methods)
+
+# COMMAND ----------
+
+(pagecountsEnAllDF
+  .cache()         # Mark the DataFrame as cached
+  .count()         # Materialize the cache
+) 
+
+# COMMAND ----------
+
+pagecountsEnAllDF.count()
+
+# COMMAND ----------
+
+pagecountsEnAllDF.printSchema()
+
+# COMMAND ----------
+
+pagecountsEnAllDF.take(5)
+
+# COMMAND ----------
+
+pagecountsEnAllDF.unpersist()
+
+# COMMAND ----------
+
+pagecountsEnAllDF.take(5)
+
+# COMMAND ----------
+
+pagecountsEnAllDF.cache()
+
+# COMMAND ----------
+
+pagecountsEnAllDF.take(10)
+
+# COMMAND ----------
+
+print(pagecountsEnAllDF) 
+
+# COMMAND ----------
+
+pagecountsEnAllDF.printSchema()
+
+
+# COMMAND ----------
+
+pagecountsEnAllDF.show()
+
+# COMMAND ----------
+
+pagecountsEnAllDF.select("project").dropDuplicates().show()
+
+
+# COMMAND ----------
+
+pagecountsEnAllDF.cache()
+pagecountsEnAllDF.count()
+
+
+# COMMAND ----------
+
+pagecountsEnAllDF.createOrReplaceTempView("pagecounts")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from pagecounts
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT DISTINCT project from pagecounts order by project
+
+# COMMAND ----------
+
+tableDF = spark.sql("SELECT DISTINCT project FROM pagecounts ORDER BY project")
+display(tableDF)
