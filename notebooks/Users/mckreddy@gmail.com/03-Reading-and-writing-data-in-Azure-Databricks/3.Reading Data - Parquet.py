@@ -184,6 +184,16 @@ display(parquetDF)
 
 # COMMAND ----------
 
+parquetDF.createOrReplaceTempView("applicationRequests")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT timestamp, site, requests FROM applicationRequests
+# MAGIC LIMIT 10
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Next steps
 # MAGIC 
