@@ -40,11 +40,28 @@
 
 # COMMAND ----------
 
+fileName = "dbfs:/mnt/training/wikipedia/clickstream/2015_02_clickstream.tsv"
+spark.read.option("header","true").option('sep',"\t").option('inferSchema',"true").csv(fileName).printSchema()
+
+# COMMAND ----------
+
 # TODO
+from pyspark.sql.types import *
 
 fileName = "dbfs:/mnt/training/wikipedia/clickstream/2015_02_clickstream.tsv"
 
-testDF = <<FILL_IN>>
+clickstreamSchema = StructType([
+  StructField("prev_id", IntegerType(),True),
+  StructField("curr_id", IntegerType(), True),
+  StructField("n", IntegerType(), True),
+  StructField("prev_title", StringType(), True),
+  StructField("curr_title", StringType(), True),
+  StructField("type", StringType(), True)
+])
+
+testDF = spark.read.option('header',"true").option('sep',"\t").schema(clickstreamSchema).csv(fileName)
+  
+#testDF.take(5)
 
 # COMMAND ----------
 
